@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: MyMarketPlace API
+  version: 1.0.0
+  description: API for an ecommerce application
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - lastName
+                - email
+                - password 
+                - phoneNumber
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                 type: string
+                 format: email
+                password:
+                  type: string
+                  minLength: 8
+                phoneNumber:
+                  type: string
+                profilePicture:
+                  type: string
+      responses:
+        "201":
+          description: Registration successful, check email to verify your account
+        "400":
+          description: Invalid input
+        "409":
+          description: Email already exists
+
+  /auth/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content: 
+          application/json:
+           schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+        "401":
+          description: Invalide Email or password
+        "400":
+          description: Bad input
+  
+  /auth/verify-email:
+    get:
+      summary: verify user email address
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+    responses:
+      "200":
+        description: email successful verified
+      "400":
+        description: Invalid or expired token
+      "500":
+        description: internal server error
+
+  auth/forgot-password:
+    post:
+      summary: requests password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: If email exists, a reset password link has been sent
+        "500":
+          description: internal server error
+
+
+
+           
+         
+              
+
+        
+
+              
+              
+
+
+                
+                
+
+
+
+
+
