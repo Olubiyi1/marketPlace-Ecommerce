@@ -11,3 +11,13 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User{
+  id String @id @default(uuid())
+  firstName String
+  lastName String
+  email String @unique
+  password String
+  profilePicture String
+  phoneNumber String
+}
