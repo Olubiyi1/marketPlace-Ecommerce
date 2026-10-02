@@ -18,6 +18,10 @@ model User{
   lastName String
   email String @unique
   password String
-  profilePicture String
+  profilePicture String?
   phoneNumber String
+  isActive Boolean @default(true)
+  createAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
