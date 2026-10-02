@@ -1,6 +1,6 @@
 import AppError from "./appError.js";
 import type {Request,Response,NextFunction} from "express"
-import { logger } from "../utils/logger.js";
+// import { logger } from "../utils/logger.js";
 
 export const globalErrorHandler = (
   err: AppError,
@@ -14,7 +14,9 @@ export const globalErrorHandler = (
 
   // Only log unexpected errors here
   if (!err.isOperational) {
-    logger.error(`${err.message}\n${err.stack}`);
+    // logger.error(`${err.message}\n${err.stack}`);
+    console.log(`${err.message}\n${err.stack}`);
+    
   }
 
   if (process.env.NODE_ENV === "development") {

@@ -4,7 +4,7 @@ class AppError extends Error {
   status: string;
 
   constructor(message: string, statusCode: number) {
-    // calls the parent class constructor to initialize the inherited part of the object.
+    // Calls the Error class constructor and passes the error message to it.
     super(message);
     this.statusCode = statusCode;
     // operational error - the application knows about this situation and can handle it gracefully.
