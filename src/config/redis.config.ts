@@ -1,11 +1,22 @@
-import { createClient } from "redis";
-import config from "./config.js";
+import config from "./config.js"
+import {Redis} from "ioredis"
 
-const redisClient = await createClient({
-    url:config.REDIS_URL
-})
-redisClient.on("error",(err)=>{
-    console.log("Redis client error",err);
+
+const redisUrl = config.redis_url
+if (!redisUrl) {
+  throw new Error("REDIS_URL is not set");
+}
+
+const redisConnection = new Redis(redisUrl,{
+    maxRetriesPerRequest: null
 })
 
-export default redisClient;
+redisConnection.on("connect", () => {
+  const { host, port } = redisConnection.options;
+  console.log(`Redis connected to ${host}:${port}`);
+});
+redisConnection.on("error",(error)=>{
+    console.error(`error connecting to redis, ${error}`);
+})
+
+export default redisConnection;

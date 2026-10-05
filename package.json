@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
@@ -7,6 +10,7 @@
     "argon2": "^0.45.1",
     "dotenv": "^18.0.4",
     "express": "^5.2.1",
+    "ioredis": "^6.0.0",
     "joi": "^18.2.9",
     "pg": "^8.23.0",
     "redis": "^6.3.0"

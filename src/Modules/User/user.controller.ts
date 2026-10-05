@@ -33,3 +33,5 @@ class UserController{
         return ResponseHandler.success(res,"user successfully deleted")
     })
 }
+
+export default new UserController
