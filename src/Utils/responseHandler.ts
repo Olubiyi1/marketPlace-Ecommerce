@@ -63,4 +63,4 @@ class ResponseHandler{
     
 }
 
-export default new ResponseHandler;
+export default ResponseHandler;

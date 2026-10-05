@@ -4,7 +4,7 @@ import type{ CreateUserData,UpdateUserData } from "./user.types.js";
 
 
 class UserService{
-    async getAlluser(){
+    async getAllusers(){
         const users = await userRepository.getAllUsers()
         return users;
     }
