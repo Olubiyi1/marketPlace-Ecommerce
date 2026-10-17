@@ -24,10 +24,12 @@ model User{
   email String @unique
   password String
   role Role @default(CUSTOMER)
+  verifiedAt DateTime?
   profilePicture String?
   phoneNumber String
   isActive Boolean @default(true)
   createAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
