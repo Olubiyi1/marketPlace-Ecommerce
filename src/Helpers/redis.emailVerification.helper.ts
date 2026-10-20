@@ -44,4 +44,4 @@ class EmailVerificationTokenService {
   }
 }
 
-export default EmailVerificationTokenService;
+export default new EmailVerificationTokenService;
