@@ -9,4 +9,4 @@ class Guards{
         return await argon2.verify(hashPasswrod,password)
     } 
 }
-export default new Guards;
+export default Guards;

@@ -6,6 +6,8 @@ import { generateToken, hashToken } from "../../Helpers/token.helper.js";
 import emailVerificationQueue from "../Queues/emailVerification.queue.js";
 import { createLabel } from "../../Utils/createLabel.js";
 import prisma from "../../lib/prisma.js";
+import Guards from "../../Guards/guards.js";
+import { use } from "react";
 
 const auth_service_Log = createLabel("AUTH_SERVICE");
 class AuthService {
@@ -82,16 +84,37 @@ class AuthService {
       await redisEmailVerificationHelper.deleteVerificationToken(token);
       auth_service_Log.info("Email verification successful");
       return { message: "Email verification successful" };
-
     } catch (err) {
       auth_service_Log.error("Error validation your email, kindly try again");
       if (err instanceof AppError) {
         throw err;
-      };
+      }
       throw new AppError(
         "Email verification failed. Please try again later.",
         500,
       );
+    }
+  }
+
+  async loginUser(data: LoginDTO) {
+    // find user
+    const user = await userService.getUserByEmail(data.email);
+    if (!user) {
+      auth_service_Log.warn("Invalid email or password");
+      throw new AppError("Invalid email or password", 401);
+    }
+
+    // compare password
+    const passwordMatch = await Guards.verifyPassword(data.password,user.password);
+    if (!passwordMatch) {
+      auth_service_Log.warn("Invalid email or password");
+      throw new AppError("Invalid email or password", 400);
+    }
+
+    // confirm if user is verified
+    if (!user.verifiedAt) {
+      auth_service_Log.warn("User email is not verified");
+      throw new AppError("Please verify your email before logging in", 403);
     }
   }
 }
