@@ -7,9 +7,10 @@ import emailVerificationQueue from "../Queues/emailVerification.queue.js";
 import { createLabel } from "../../Utils/createLabel.js";
 import prisma from "../../lib/prisma.js";
 import Guards from "../../Guards/guards.js";
-import { use } from "react";
+
 
 const auth_service_Log = createLabel("AUTH_SERVICE");
+
 class AuthService {
   async registerUser(userData: RegisterDTO) {
     // find existing email/user
