@@ -7,6 +7,7 @@ class EmailVerificationTokenService {
     const hashedToken = hashToken(token);
     const key = `emailVerification:${hashedToken}`;
     try {
+      // Store the email for 15 minutes
       await redisConnection.setex(key, 900, email);
     } catch (err) {
       throw new AppError(
