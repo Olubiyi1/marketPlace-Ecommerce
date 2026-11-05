@@ -253,7 +253,7 @@ it("should throw an error if redis fails", async () => {
 
   expect(userService.createUser).toHaveBeenCalledTimes(1);
 
-  expect(redisEmailVerificationHelper.setVerificationToken).toHaveBeenCalledWith("hashed-token", newUser.email);
+  expect(redisEmailVerificationHelper.setVerificationToken,).toHaveBeenCalledWith("hashed-token", newUser.email);
 
   expect(emailVerificationQueue.add).not.toHaveBeenCalled();
 });
