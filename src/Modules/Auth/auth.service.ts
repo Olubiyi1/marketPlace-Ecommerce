@@ -17,15 +17,22 @@ class AuthService {
     const existingUser = await userService.getUserByEmail(userData.email);
     if (existingUser) {
       auth_service_Log.warn(
-        "User with email: ${existingUser.email} already exists",
+        `User with email: ${existingUser.email} already exists`,
       );
       throw new AppError(
         `User with email: ${existingUser.email} already exists`,
         409,
       );
     }
+
+    // hash password
+    const hashPassword = await Guards.hashPassword(userData.password)
+    
     // create new user
-    const user = await userService.createUser(userData);
+    const user = await userService.createUser({
+      ...userData,
+      password:hashPassword
+    });
 
     // generate token
 

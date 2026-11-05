@@ -20,7 +20,6 @@ const emailVerificationWorker = new Worker(
         <a href="${verificationUrl}">Verify my email</a>`,
       );
 
-      console.log("preparing to send email");
     }
   },
   {

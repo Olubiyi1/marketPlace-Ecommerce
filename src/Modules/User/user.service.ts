@@ -1,6 +1,7 @@
 import userRepository from "../../Repository/user.repository.js";
 import AppError from "../../ErrorHandlers/appError.js";
 import type{ CreateUserData,UpdateUserData } from "./user.types.js";
+import type { User } from "../../generated/prisma/client.js";
 
 
 class UserService{
@@ -17,14 +18,12 @@ class UserService{
         return existingUser;
     }
 
-    async getUserByEmail(email:string){
-        const existingUser = await userRepository.getUserByEmail(email)
-        if(!existingUser){
-            throw new AppError("User not found",404)
-        }
-        return existingUser;
+    // check whether a user exists
+    async getUserByEmail(email:string):Promise<User | null>{
+       return await userRepository.getUserByEmail(email)
+        
     }
-
+    
     async createUser(data:CreateUserData){
         const existingUser = await userRepository.getUserByEmail(data.email)
         if(existingUser){
