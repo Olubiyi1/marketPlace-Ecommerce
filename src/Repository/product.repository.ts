@@ -35,7 +35,7 @@ class ProductRepository {
   }
 
   //soft  Delete a product
-  async deleteProduct(id: string) {
+  async deactivateProduct(id: string) {
     return await prisma.product.update({
       where: { id },data:{isAvailable:false}
     });

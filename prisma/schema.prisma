@@ -12,35 +12,100 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role{
+enum Role {
   CUSTOMER
   ADMIN
 }
 
-model User{
-  id String @id @default(uuid())
-  firstName String
-  lastName String
-  email String @unique
-  password String
-  role Role @default(CUSTOMER)
-  verifiedAt DateTime?
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+}
+
+model User {
+  id             String    @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String    @unique
+  password       String
+  role           Role      @default(CUSTOMER)
+  verifiedAt     DateTime?
   profilePicture String?
-  phoneNumber String
-  isActive Boolean @default(true)
-  createAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  phoneNumber    String
+  isActive       Boolean   @default(true)
+  createAt       DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  orders         Order[]
 }
 
-model Product{
-  id String @id @default(uuid())
-  name String
-  category String
-  price Decimal @db.Decimal(10,2)
-  quantity Int @default(0)
-  image String?
-  isAvailable Boolean @default(true)
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  price       Decimal  @db.Decimal(10, 2)
+  quantity    Int      @default(0)
+  image       String?
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  customerId        String
+  totalAmount       Decimal     @db.Decimal(10, 2)
+  orderStatus       OrderStatus @default(PENDING)
+  reservationExpiry DateTime?
+  createdAt         DateTime    @default(now())
+
+  customer User        @relation(fields: [customerId], references: [id])
+  payments Payment[]
+  items    OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Decimal  @db.Decimal(10, 2)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 }
 
+model Payment {
+  id            String        @id @default(uuid())
+  orderId       String
+  reference     String        @unique
+  amount        Decimal       @db.Decimal(10, 2)
+  provider      String
+  paymentStatus PaymentStatus @default(PENDING)
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  order         Order         @relation(fields: [orderId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String
+  oldValue  Json?
+  newValue  Json?
+  createdAt DateTime @default(now())
+}
