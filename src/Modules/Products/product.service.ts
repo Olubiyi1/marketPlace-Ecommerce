@@ -49,4 +49,4 @@ async deactivateProduct(id: string) {
 }
 }
 
-export default ProductService;
+export default new ProductService;
