@@ -3,7 +3,6 @@ import productService from "./product.service.js";
 import ResponseHandler from "../../Utils/responseHandler.js";
 import asyncHandler from "../../Utils/asyncHandler.js";
 import AppError from "../../ErrorHandlers/appError.js";
-import { string } from "joi";
 
 class ProductController {
   // get all products
@@ -19,12 +18,13 @@ class ProductController {
 
   // create product
   createProduct = asyncHandler(async (req: Request, res: Response) => {
-    const newProduct = await productService.createProduct(req.body);
+    const newProduct = req.body
+    const product = await productService.createProduct(newProduct);
 
     return ResponseHandler.created(
       res,
       "Product created successfully",
-      newProduct,
+      product,
     );
   });
 

@@ -1,11 +1,11 @@
 import { Router } from "express";
 import productController from "./product.controller.js";
 
-const router = Router();
+const productRouter = Router();
 
-router.get("/", productController.getAllProducts);
-router.post("/", productController.createProduct);
-router.patch("/:id", productController.updateProduct);
-router.patch("/:id/deactivate", productController.deactivateProduct);
+productRouter.get("/", productController.getAllProducts);
+productRouter.post("/", productController.createProduct);
+productRouter.patch("/:id", productController.updateProduct);
+productRouter.patch("/deactivate/:id", productController.deactivateProduct);
 
-export default router;
+export default productRouter;

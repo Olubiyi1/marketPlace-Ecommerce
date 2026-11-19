@@ -1,6 +1,5 @@
 export type CreateProductData = {
   name: string;
-  description: string;
   category: string;
   price: number;
   quantity: number;
@@ -9,7 +8,6 @@ export type CreateProductData = {
 
 export type UpdateProductData = {
   name?: string;
-  description?: string;
   category?: string;
   price?: number;
   quantity?: number;

@@ -1,7 +1,7 @@
 import AppError from "../../ErrorHandlers/appError.js";
 import { Prisma } from "../../generated/prisma/client.js";
 import type { CreateOrderDTO } from "../../Modules/Order/order.dto.js";
-import orderRepository from "../../Repository/order.repository.js"
+import orderRepository from "../../Repository/order.repository.js";
 
 class OrderService {
   async createOrder(customerId: string, data: CreateOrderDTO) {
@@ -44,6 +44,7 @@ class OrderService {
         return product.id === item.productId;
       });
 
+
       if (product) {
         const subTotal = product.price.mul(item.quantity);
         totalAmount = totalAmount.plus(subTotal);
@@ -64,11 +65,7 @@ class OrderService {
     });
 
     // send prepared data to repository
-    return orderRepository.createOrder(
-      customerId,
-      totalAmount,
-      orderItems
-    );
+    return orderRepository.createOrder(customerId, totalAmount, orderItems);
   }
 }
 

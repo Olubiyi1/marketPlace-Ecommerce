@@ -1,10 +1,9 @@
-import redisConnection from "./config/redis.config.js";
-import express from "express"
+// import redisConnection from "./config/redis.config.js";
+import app from "./app.js";
+import config from "./config/config.js";
 
 
-const app = express()
-
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(config.port, () => {
+  console.log(`server runnin on ${config.port}`);
 });
+
