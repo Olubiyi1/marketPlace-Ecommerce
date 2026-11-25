@@ -44,7 +44,6 @@ class OrderService {
         return product.id === item.productId;
       });
 
-
       if (product) {
         const subTotal = product.price.mul(item.quantity);
         totalAmount = totalAmount.plus(subTotal);
@@ -66,6 +65,27 @@ class OrderService {
 
     // send prepared data to repository
     return orderRepository.createOrder(customerId, totalAmount, orderItems);
+  }
+
+  // for customer
+  async getCustomerOrderById(customerId: string, orderId: string) {
+    const order = await orderRepository.findCustomerOrderById(
+      orderId,
+      customerId,
+    );
+    if (!order) {
+      throw new AppError("Order not found", 404);
+    }
+    return order;
+  }
+
+  // for admin
+  async getOrderById(orderId: string) {
+    const order = await orderRepository.findOrderById(orderId);
+    if (!order) {
+      throw new AppError("Order not found", 404);
+    }
+    return order;
   }
 }
 

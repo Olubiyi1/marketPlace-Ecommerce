@@ -14,7 +14,11 @@ class OrderRepository {
     });
   }
 
-  async createOrder(customerId: string,totalAmount: Prisma.Decimal,items: {productId: string;quantity: number;unitPrice: Prisma.Decimal;}[]) {
+  async createOrder(
+    customerId: string,
+    totalAmount: Prisma.Decimal,
+    items: { productId: string; quantity: number; unitPrice: Prisma.Decimal }[],
+  ) {
     // begin transaction
     const order = await prisma.$transaction(async (tx) => {
       const newOrder = await tx.order.create({
@@ -52,7 +56,7 @@ class OrderRepository {
               },
             },
           });
-        })
+        }),
       );
 
       // check if all stock updates were successful
@@ -66,6 +70,57 @@ class OrderRepository {
     });
 
     return order;
+  }
+
+  async findCustomerOrderById(orderId:string,customerId:string){
+    const order = await prisma.order.findUnique({
+      where:{
+        id:orderId,
+        customerId
+      },
+      include:{
+        items:{
+          include:{
+            product:true
+          }
+        }
+      }
+    })
+    return order;
+  }
+
+  async findOrderById(orderId:string){
+    const order= prisma.order.findUnique({
+      where:{
+      id:orderId
+      },
+      include:{
+        items:{
+          include:{
+            product:true
+          }
+        },
+        customer:true
+      }    
+    })
+    return order;
+  }
+  
+  async findAllOrders(orderId:string){
+    return prisma.order.findMany({
+      where:{
+        id:orderId
+      },
+      include:{
+        items:{
+          include:{
+            product:true
+          }
+        },
+        customer:true
+      }
+    })
+
   }
 }
 

@@ -18,6 +18,19 @@ class OrderController {
       order
     );
   });
+  
+  getCustomerOrderById = asyncHandler(async(req:Request,res:Response)=>{
+    const {customerId,orderId} = req.body
+    
+      const order = await orderService.getCustomerOrderById(orderId,customerId)
+      return ResponseHandler.success(res,"Order retrieved successfully",order)
+  })
+
+  getOrderId = asyncHandler(async(req:Request,res:Response)=>{
+    const {orderId} = req.body
+    const order = await orderService.getOrderById(orderId)
+    return ResponseHandler.success(res,`${order.customer.firstName} ${order.customer.lastName} order retrieved successfully`,order)
+  })
 }
 
 export default new OrderController();
